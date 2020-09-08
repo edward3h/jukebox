@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  mpd:
+    build: ./mpd
+    volumes:
+      - mpd_state:/var/lib/mpd
+      - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
+    depends_on:
+      - icecast
+
+  mympd:
+    build: ./mympd
+    volumes:
+      - mpd_state:/var/lib/mpd
+      - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
+      - mympd_state:/var/lib/mympd
+    depends_on:
+      - mpd
+ 
+  icecast:
+    image: vitiman/alpine-icecast:latest
+    ports:
+      - "8000:8000"
+
+  mpdas:
+    build: ./mpdas
+    environment:
+      - SERVICE
+      - LASTFM_USER
+      - LASTFM_PASS
+    depends_on:
+      - mpd
+
+  web:
+    image: nginx:alpine
+    ports:
+      - "4080:80"
+    volumes:
+      - ./web/nginx.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  mpd_state:
+  mympd_state:

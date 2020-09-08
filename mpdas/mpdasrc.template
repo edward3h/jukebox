@@ -1,0 +1,31 @@
+# Set your Last.fm/Libre.fm username
+
+username = $LASTFM_USER
+
+# Set your Last.fm/Libre.fm password
+
+password = $LASTFM_PASS
+
+# Set the hostname used by MPD
+
+host = $MPD_HOST
+
+# Set the password used by MPD
+
+mpdpassword = 
+
+# Set the port used by MPD
+
+port = 6600
+
+# Changes the user mpdas runs as
+
+runas = 
+
+# Print out debug information
+
+debug = 0
+
+# Will scrobble to Libre.fm if set to "librefm". Otherwise Last.fm is used (default)
+
+service = $SERVICE
