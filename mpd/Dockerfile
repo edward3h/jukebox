@@ -104,6 +104,7 @@ COPY --from=build /mpd-*/output/release/mpd /usr/bin/mpd
 # RUN setcap -r /usr/bin/mpd
 COPY mpd.conf /etc/mpd.conf
 VOLUME /var/lib/mpd
+COPY entry.sh .
 
 EXPOSE 6600
-CMD ["mpd", "--stdout", "--no-daemon"]
+ENTRYPOINT [ "./entry.sh" ]
