@@ -16,7 +16,7 @@ Copy `example.env` to `.env`, and edit the variable values.
 * `LASTFM_USER`, `LASTFM_PASS` Username and password to log in to [last.fm](https://www.last.fm/) for scrobbling.
 * `LIBREFM` If this is set to a non-empty value, scrobbling will go to [libre.fm](https://libre.fm/) instead.
 
-Run `docker-compose up`
+Run `docker-compose up` (or `docker-compose up --build` to rebuild with any changes).
 
 Open your browser to <http://localhost:4080/> (or whatever hostname) to use the
 [myMPD](https://jcorporation.github.io/myMPD/) web interface. Local playback is

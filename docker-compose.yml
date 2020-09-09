@@ -28,6 +28,7 @@ services:
       - SERVICE
       - LASTFM_USER
       - LASTFM_PASS
+      - LIBREFM
     depends_on:
       - mpd
 
