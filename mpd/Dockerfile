@@ -4,7 +4,7 @@
 
 FROM alpine:3.12 AS build
 RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-dev icu-dev \
-    libid3tag-dev pcre-dev libshout-dev gnu-libiconv-dev lame-dev \
+    libid3tag-dev pcre-dev gnu-libiconv-dev lame-dev \
     && wget https://www.musicpd.org/download/mpd/0.21/mpd-0.21.25.tar.xz \
     && tar xf mpd-0.21.25.tar.xz \
     && cd mpd-0.21.25 \
@@ -32,7 +32,7 @@ RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-
   -Dsyslog=enabled \
   -Ddocumentation=false \
   -Ddsd=false \
-  -Dhttpd=false \
+  -Dhttpd=true \
   -Dneighbor=false \
   -Drecorder=false \
   -Dtest=false \
@@ -72,7 +72,7 @@ RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-
   -Dpulse=disabled \
   -Dqobuz=disabled \
   -Dshine=disabled \
-  -Dshout=enabled \
+  -Dshout=disabled \
   -Dsidplay=disabled \
   -Dsmbclient=disabled \
   -Dsndfile=disabled \
@@ -99,12 +99,12 @@ RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-
   && ninja -C output/release
 
 FROM alpine:3.12
-RUN apk add --no-cache sqlite-libs ffmpeg pcre icu libid3tag libshout lame
+RUN apk add --no-cache sqlite-libs ffmpeg pcre icu libid3tag lame
 COPY --from=build /mpd-*/output/release/mpd /usr/bin/mpd
-# RUN setcap -r /usr/bin/mpd
 COPY mpd.conf /etc/mpd.conf
 VOLUME /var/lib/mpd
 COPY entry.sh .
 
 EXPOSE 6600
-ENTRYPOINT [ "./entry.sh" ]
+EXPOSE 8000
+CMD [ "./entry.sh" ]
