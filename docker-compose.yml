@@ -14,8 +14,11 @@ services:
       - mpd_state:/var/lib/mpd
       - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
       - mympd_state:/var/lib/mympd
+    ports:
+      - "4080:80"
     depends_on:
       - mpd
+      - mpdas
  
   icecast:
     image: vitiman/alpine-icecast:latest
@@ -31,16 +34,6 @@ services:
       - LIBREFM
     depends_on:
       - mpd
-
-  web:
-    image: nginx:alpine
-    ports:
-      - "4080:80"
-    volumes:
-      - ./web/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - icecast
-      - mympd
 
 volumes:
   mpd_state:
