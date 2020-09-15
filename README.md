@@ -24,6 +24,8 @@ supported.
 
 You can also connect any audio client that supports mp3 streams to <http://localhost:8000/>
 
+MPD itself is exposed on port 6600 in case you want to connect a different client.
+
 ## Related
 
 I'm using [Beets](http://beets.io/) for organizing my music collection (but it's not in this image).
