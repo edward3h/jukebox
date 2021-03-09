@@ -2,7 +2,7 @@
 # Dockerfile for mpd
 #
 
-FROM alpine:3.13 AS build
+FROM alpine:3.12 AS build
 
 ARG MPD_VERSION
 RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-dev icu-dev \
@@ -101,7 +101,7 @@ RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-
   && meson configure output/release \
   && ninja -C output/release
 
-FROM alpine:3.13
+FROM alpine:3.12
 RUN apk add --no-cache sqlite-libs ffmpeg pcre icu libid3tag lame
 COPY --from=build /mpd-*/output/release/mpd /usr/bin/mpd
 COPY mpd.conf /etc/mpd.conf
