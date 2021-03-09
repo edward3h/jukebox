@@ -1,7 +1,10 @@
 version: "3.8"
 services:
   mpd:
-    build: ./mpd
+    build: 
+      context: ./mpd
+      args: 
+        MPD_VERSION: "0.22.4"
     ports:
       - "6600:6600"
       - "8000:8000"
@@ -10,7 +13,8 @@ services:
       - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
 
   mympd:
-    build: ./mympd
+    build: 
+      context: ./mympd
     volumes:
       - mpd_state:/var/lib/mpd
       - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
