@@ -4,7 +4,7 @@ services:
     build: 
       context: ./mpd
       args: 
-        MPD_VERSION: "0.22.4"
+        MPD_VERSION: "0.22.6"
     ports:
       - "6600:6600"
       - "8000:8000"
