@@ -6,20 +6,39 @@ services:
       - "6600:6600"
       - "8000:8000"
     volumes:
+      - ./mpd.conf:/etc/mpd.conf
       - mpd_state:/var/lib/mpd
       - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
+    networks:
+      - web_bus
+    restart: "unless-stopped"
 
   mympd:
-    build: ./mympd
+    image: ghcr.io/jcorporation/mympd/mympd
+    container_name: mympd
     volumes:
       - mpd_state:/var/lib/mpd
       - ${MUSIC_DIR:-$HOME/Music}:/var/lib/mpd/music
       - mympd_state:/var/lib/mympd
+      - ./mympd.conf:/etc/mympd.conf
     ports:
       - "4080:80"
     depends_on:
       - mpd
       - mpdas
+    restart: "unless-stopped"
+    labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=web_bus"
+        - "traefik.http.routers.jukebox.rule=Host(`jukebox.ethelred.org`)"
+        - "traefik.http.routers.jukebox.entrypoints=web-secure"
+        # - "traefik.http.services.jukebox.loadbalancer.server.port=4080"
+        - "traefik.http.routers.jukebox.middlewares=forward-auth"            
+        - "traefik.http.routers.jukebox.tls=true"
+        - "traefik.http.routers.jukebox.tls.certresolver=default"
+
+    networks:
+        - web_bus
 
   mpdas:
     build: ./mpdas
@@ -29,8 +48,14 @@ services:
       - LASTFM_PASS
       - LIBREFM
     depends_on:
-      - mpd
+      - mpd    
+    networks:
+      - web_bus
 
 volumes:
   mpd_state:
   mympd_state:
+
+networks: 
+  web_bus:
+    external: true
