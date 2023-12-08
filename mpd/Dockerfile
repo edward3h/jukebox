@@ -2,7 +2,7 @@
 # Dockerfile for mpd
 #
 
-FROM alpine:3.14 AS build
+FROM alpine:3.19 AS build
 RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-dev icu-dev \
     libid3tag-dev pcre-dev gnu-libiconv-dev lame-dev \
     && wget https://www.musicpd.org/download/mpd/0.22/mpd-0.22.9.tar.xz\
@@ -98,7 +98,7 @@ RUN apk add --no-cache build-base boost ninja boost-dev meson sqlite-dev ffmpeg-
   && meson configure output/release \
   && ninja -C output/release
 
-FROM alpine:3.14
+FROM alpine:3.19
 RUN apk add --no-cache sqlite-libs ffmpeg pcre icu libid3tag lame
 COPY --from=build /mpd-*/output/release/mpd /usr/bin/mpd
 VOLUME /var/lib/mpd
